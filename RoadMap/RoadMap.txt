@@ -1,0 +1,16 @@
+1. HTML
+2. CSS
+3. JavaScripts
+	A. React
+	B. Vue 
+	C. Angular
+4. Git Hub
+5. WordPrees
+----------------------
+1.  	A. PHP
+	B. Python
+	C. JavaScripts
+2. 	A. Laravel
+	B. Django
+	C. Node Js
+3. Git Hub

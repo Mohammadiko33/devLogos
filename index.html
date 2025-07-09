@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="./src/Pages/Product/style/drog.css">
+  <title>Drag & Drop</title>
+  <style>
+   *{
+  box-sizing: border-box;
+}
+
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.cover {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: none;
+}
+
+
+
+
+.continer{
+  margin-top: 50px;
+  padding: 0;
+  width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.column{
+  border: 1px solid black;
+}
+
+.column__title{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: auto;
+  background-color: #2C3E50;
+}
+
+.column__title-header{
+  font-size: 16px;
+  height: 30px;
+  color: white;
+}
+
+.column__content{
+  height: 400px;
+  overflow-y: auto;
+  background-color: #F5F5F5;
+  
+}
+
+#add-todo{
+  margin-top: 20px;
+  padding-top: 5px;
+  font-weight: 500;
+  border: none;
+  background-color: #BDC3C7;
+  border-radius: 5px;
+  height: 30px;
+  transition: all 0.3s ease-in-out;
+}
+
+.add-todo-scale{
+  transform: scale(1.05);
+  position: absolute;
+  z-index: +4;
+}
+
+.todo-continar{
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 4px;
+  background-color: #212121;
+}
+
+.todo{
+  color: white;
+}
+
+.del--todo{
+  margin-top: -5px;
+  color: white;
+}
+
+.add-box {
+    position: absolute;
+    top: -200px;
+    z-index: 5;
+    width: 200px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    transition: all 0.8s ease-in-out;
+}
+
+.add-box--show {
+    transform: translate(0, 270px);
+}
+   
+   
+
+
+.add__title{
+  
+}
+
+.add-header{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background-color: #ECEFF1;
+  padding: 0;
+  margin: 0 0 5px;
+  line-height: 2rem;
+}
+
+input{
+  width: 100%;
+  margin: 0 0 5px;
+  border-radius: 5px;
+  line-height: 2rem;
+}
+
+.add-btn{
+  width: 100%;
+  background-color: #00E676;
+  margin: 0 0 5px;
+  border-radius: 5px;
+  line-height: 2rem;
+}
+  </style>
+</head>
+<body>
+  <div class="add-box">
+    <div class="add-header">
+      <span class="add__title">Add Todo</span>
+      <span class="cancell-add">×</span>
+    </div>
+    <input type="text" placeholder="Todo..." required autofocus>
+    <button class="add-btn">Add Todo</button>
+  </div>
+  <div class="cover"></div>
+  <section class="continer">
+    <div class="column">
+      <div class="column__title">
+        <h2 class="column__title-header">No Status</h2>
+      </div>
+      <div class="column__content">
+        <button id="add-todo">+Add Todo</button>
+        <div id="0" ondragstart="dragHandler(event)" draggable="true" class="todo-continar">
+          <p class="todo">Learn JS</p>
+          <p class="del--todo">×</p>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="column__title">
+        <h2 class="column__title-header">Not Started</h2>
+      </div>
+      <div class="column__content"></div>
+    </div>
+    <div class="column">
+      <div class="column__title">
+        <h2 class="column__title-header">In Progress</h2>
+      </div>
+      <div class="column__content"></div>
+    </div>
+    <div class="column">
+      <div class="column__title">
+        <h2 class="column__title-header">Completed</h2>
+      </div>
+      <div class="column__content"></div>
+    </div>
+  </section>
+  <script>
+let enterBtn = document.querySelector('#add-todo');
+let continar = document.querySelectorAll('.column__content');
+let addBox = document.querySelector('.add-box');
+let cancAdd = document.querySelector('.cancell-add');
+let inputElem = document.querySelector('input');
+let addBtn = document.querySelector('.add-btn');
+let coverBlack = document.querySelector('.cover');
+let remTodo = document.querySelector('.del--todo');
+let columnTodo = document.querySelectorAll('.column');
+let i = 0;
+
+function dragHandler(event) {
+    event.dataTransfer.setData("elemId", event.target.id);
+}
+
+enterBtn.addEventListener('click', function () {
+    addBox.classList.add('add-box--show');
+    enterBtn.classList.add('add-todo-scale');
+    coverBlack.style.display = 'block';
+    setTimeout(function () {
+        enterBtn.classList.remove('add-todo-scale');
+    }, 300);
+});
+
+cancAdd.addEventListener('click', function () {
+    addBox.classList.remove('add-box--show');
+    coverBlack.style.display = 'none';
+});
+
+addBtn.addEventListener('click', function () {
+    if (inputElem.value.length > 3) {
+        let newTodoDivTag = document.createElement('div');
+        let newTodoTextTag = document.createElement('p');
+        let newTodoCancTag = document.createElement('p');
+        newTodoTextTag.innerHTML = inputElem.value;
+        newTodoCancTag.innerHTML = '×';
+        newTodoDivTag.classList.add('todo-continar');
+        newTodoDivTag.setAttribute('draggable', 'true');
+        newTodoDivTag.setAttribute('id', ++i);
+        newTodoTextTag.classList.add('todo');
+        newTodoCancTag.classList.add('del--todo');
+        continar[0].append(newTodoDivTag);
+        newTodoDivTag.append(newTodoTextTag);
+        newTodoDivTag.append(newTodoCancTag);
+        inputElem.value = '';
+        addBox.classList.remove('add-box--show');
+        coverBlack.style.display = 'none';
+
+        newTodoCancTag.addEventListener('click', function (event) {
+            event.target.parentElement.remove();
+        });
+
+        newTodoDivTag.addEventListener('dragstart', dragHandler);
+    }
+});
+
+remTodo.addEventListener('click', function (event) {
+    event.target.parentElement.remove();
+});
+
+continar.forEach(function (box) {
+    box.addEventListener('dragover', function (event) {
+        event.preventDefault();
+    });
+
+    box.addEventListener('drop', function (event) {
+        event.preventDefault();
+        let getId = event.dataTransfer.getData('elemId');
+        let elemTarget = document.getElementById(getId);
+        box.appendChild(elemTarget);
+    });
+});
+  </script>
+</body>
+</html>
